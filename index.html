@@ -225,6 +225,12 @@ html.pre .copy>*,html.pre .notice,html.pre .reopen{opacity:0!important;transform
 .toplogo{position:absolute;top:0;left:0;right:0;z-index:3;padding-top:max(26px,calc(env(safe-area-inset-top,0px) + 16px));pointer-events:none}
 .toplogo img{display:block;height:16px;width:auto;opacity:.95}
 @media (max-width:600px){.toplogo{padding-top:max(20px,calc(env(safe-area-inset-top,0px) + 12px))}.toplogo img{height:13px}}
+/* 공지 안 전시 안내: 킨텍스 행사 페이지 링크 */
+a.n-expo{text-decoration:none;color:inherit;cursor:pointer;transition:background .2s ease}
+a.n-expo:hover{background:rgba(255,255,255,.11)}
+a.n-expo:focus-visible{outline:2px solid var(--trail);outline-offset:-2px}
+a.n-expo .ext{font-style:normal;font-weight:400;color:var(--trail);margin-left:4px;display:inline-block;transition:transform .2s ease}
+a.n-expo:hover .ext{transform:translate(2px,-2px)}
 </style>
 
 </head>
@@ -265,11 +271,11 @@ html.pre .copy>*,html.pre .notice,html.pre .reopen{opacity:0!important;transform
           <h2 id="n-title">홈페이지 오픈 예정 안내</h2>
           <p>㈜넥스트에너지 홈페이지를 새롭게 준비하고 있습니다. 제품과 기술 정보를 담아 곧 정식으로 오픈하겠습니다. 불편을 드려 죄송합니다.</p>
         </div>
-        <div class="n-expo">
+        <a class="n-expo" href="https://www.kintex.com/web/ko/event/view.do?seq=26040310&amp;pageIndex=1&amp;pageUnit=9&amp;searchKeyword=&amp;searchType=11&amp;searchStartDt=2026-11-04&amp;searchEndDt=2026-11-04&amp;searchCheck=" target="_blank" rel="noopener" aria-label="World Hydrogen Expo 2026 킨텍스 행사 안내 페이지 열기 (새 창)">
           <b>B092</b>
-          <strong>World Hydrogen Expo 2026 · KINTEX</strong>
+          <strong>World Hydrogen Expo 2026 · KINTEX <i class="ext" aria-hidden="true">↗</i></strong>
           <span>전시 기간 중 부스에서 제품을 직접 확인하실 수 있습니다.</span>
-        </div>
+        </a>
         <div class="n-contact">
           <small>도입·기술 문의 (본사)</small><small>FAX</small>
           <span class="num">063-262-0801</span><span class="num">063-262-0803</span>
