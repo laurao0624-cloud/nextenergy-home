@@ -65,11 +65,11 @@ button:focus-visible{outline:2px solid var(--trail);outline-offset:3px}
 .mark3d{position:absolute;inset:0;z-index:2;pointer-events:none}
 .mark3d canvas{display:block;width:100%!important;height:100%!important}
 .page.has3d .mark{display:none}
-/* 좁은 화면: 3D 로고를 헤더 아래 별도 띠에 두고 카피는 그 아래부터 */
-@media (max-width:900px){
-  .page.has3d .mark3d{top:0;bottom:auto;height:min(48vw,380px)}
-  .page.has3d .stage .wrap{padding-top:calc(min(48vw,380px) + 4px)}
-}
+/* 3D 로고·배경 영상: 화면에 고정(폰에서 스크롤해도 배경으로 유지). 주소창 높이 변화에 흔들리지 않게 lvh 사용 */
+.mark3d{position:fixed;top:0;left:0;right:0;bottom:auto;height:100vh;height:100lvh}
+.bg{position:fixed;top:0;left:0;right:0;bottom:auto;height:100vh;height:100lvh}
+/* 세로형: 로고(X 확대)가 서브 문장·칩 뒤 배경으로 깔림 — 글자 가독성용 그림자 */
+@media (orientation:portrait) and (max-width:1100px){.page.has3d .copy p{text-shadow:0 1px 14px rgba(3,6,24,.9),0 0 2px rgba(3,6,24,.8)}}
 .grain{position:absolute;inset:-50%;z-index:2;pointer-events:none;opacity:.08;mix-blend-mode:overlay;animation:grain 1s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 .copy,.notice{transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
@@ -332,22 +332,35 @@ button:focus-visible{outline:2px solid var(--trail);outline-offset:3px}
     pu.res.value.set(w*PR,h*PR);pu.aspect.value=w/h;
     cam.aspect=w/h;cam.updateProjectionMatrix();
     narrow=w<900;
-    if(narrow){g.position.set(0.6,0.75,0);g.rotation.set(-0.32,0.5,0.16);}
-    else{g.position.set(0.6,0.7,0);g.rotation.set(-0.62,0.62,0.22);}
+    var portrait=w/h<1;
+    g.position.set(0.6,0.7,0);
+    if(portrait)g.rotation.set(-0.42,0.5,0.32);   /* 세로형: X 확대 구도 */
+    else g.rotation.set(-0.62,0.62,0.22);
     /* 화면 맞춤: 로고 네 모서리를 최종 카메라 위치에서 투영해, 가로 폭을 채우고 좌우 중앙에 오도록 반복 보정 */
     g.scale.setScalar(1);
     var cp=new THREE.PerspectiveCamera(34,w/h,0.1,100);cp.position.set(0.6,0.9,10.5);cp.lookAt(0.6,0.7,0);cp.updateMatrixWorld();cp.updateProjectionMatrix();
-    var corners=[[-5,-0.8],[5,-0.8],[-5,0.8],[5,0.8]],target=narrow?1.7:1.6,halfW=Math.tan(THREE.MathUtils.degToRad(17))*10.5*(w/h);
+    var corners=[[-5,-0.8],[5,-0.8],[-5,0.8],[5,0.8]],target=portrait?2.3:1.6,halfW=Math.tan(THREE.MathUtils.degToRad(17))*10.5*(w/h);
     /* PC: 로고 윗선이 메인 슬로건 아래 끝(+여백)보다 내려오도록 */
     var lim=null,halfH=Math.tan(THREE.MathUtils.degToRad(17))*10.5;
-    if(!narrow){var hb=document.querySelector('.copy h1');if(hb){var hr=hb.getBoundingClientRect(),hr0=host.getBoundingClientRect();lim=1-2*((hr.bottom-hr0.top)+40)/h;}}
+    /* 로고 윗선 기준: 가로형은 슬로건 아래 40px, 세로형은 슬로건과 살짝(28px) 겹치게 */
+    var hb=document.querySelector('.copy h1'),pb=document.querySelector('.copy p'),lb=null,sy=window.scrollY||0;
+    if(hb){var hr=hb.getBoundingClientRect();lim=1-2*((hr.bottom+sy)+(portrait?6:40))/h;}
+    /* 세로형: X를 화면 폭 약 75%로 키워 서브 문장~칩 영역 뒤 중앙에 */
+    var yc=null;
+    if(portrait){
+      lim=null;corners=[[-0.6,-0.8],[1.85,-0.8],[-0.6,0.8],[1.85,0.8]];target=w<600?1.45:1.0;
+      var sp=document.querySelector('.copy .specs');
+      if(pb&&sp){yc=1-2*(((pb.getBoundingClientRect().top+sy)+(sp.getBoundingClientRect().bottom+sy))/2+30)/h;}
+    }
     for(var k=0;k<16;k++){
       g.updateMatrixWorld(true);
-      var mn=9,mx=-9,my=-9;
-      for(var c=0;c<4;c++){var v=new THREE.Vector3(corners[c][0],corners[c][1],0).applyMatrix4(g.matrixWorld).project(cp);mn=Math.min(mn,v.x);mx=Math.max(mx,v.x);my=Math.max(my,v.y);}
-      g.scale.multiplyScalar(Math.pow(target/(mx-mn),0.7));
+      var mn=9,mx=-9,my=-9,myn=9;
+      for(var c=0;c<4;c++){var v=new THREE.Vector3(corners[c][0],corners[c][1],0).applyMatrix4(g.matrixWorld).project(cp);mn=Math.min(mn,v.x);mx=Math.max(mx,v.x);my=Math.max(my,v.y);myn=Math.min(myn,v.y);}
+      var fx=target/(mx-mn),fy=(lb!==null&&lim!==null)?(lim-lb)/(my-myn):9;
+      g.scale.multiplyScalar(Math.pow(Math.min(fx,fy),0.7));
       g.position.x-=(mn+mx)/2*halfW*0.7;
       if(lim!==null&&my>lim)g.position.y-=(my-lim)*halfH*0.7;
+      if(yc!==null)g.position.y-=((my+myn)/2-yc)*halfH*0.7;
     }
     g.updateMatrixWorld(true);
     pu.maxBlur.value=(MODE==='C'?16:13)*PR;
