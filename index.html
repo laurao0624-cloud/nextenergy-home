@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <script>
 /* 첫 화면이 그려지기 전에 카피·공지를 숨김(오프닝 연출용). 7초 뒤엔 무조건 표시 */
-(function(){var d=document.documentElement;var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(!rm){d.classList.add('pre');setTimeout(function(){d.classList.remove('pre');},7000);}})();
+(function(){var d=document.documentElement;d.classList.add('wait3d');setTimeout(function(){d.classList.remove('wait3d');},8000);var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(!rm){d.classList.add('pre');setTimeout(function(){d.classList.remove('pre');},7000);}})();
 </script>
 <style>
 /* Layout: 스크롤 없는 한 화면 — 헤더 / 다크 네이비 스테이지(라이트 트레일 + 카피 + 공지 카드) / 하단 회사정보 한 줄. 웹 시안이므로 단일 다크 테마 고정 */
@@ -216,6 +216,7 @@ button:focus-visible{outline:2px solid var(--trail);outline-offset:3px}
   .specs span small{font-size:1.5vw}
   .notice,.reopen{justify-self:start;max-width:min(620px,100%);margin-top:26vh}
 }
+html.wait3d .mark{display:none}   /* 3D 준비 전에는 평면 대체 로고를 숨김(첫 방문 잔상 방지) */
 html.pre .copy>*,html.pre .notice,html.pre .reopen{opacity:0!important;transform:translateY(16px)}
 /* 가로형이면서 화면 높이가 낮을 때(아이패드 가로·작은 노트북): 공지 축소, 넘치면 스크롤 */
 @media (orientation:landscape) and (min-width:901px) and (max-height:900px){.notice,.reopen{zoom:.86}}
@@ -476,7 +477,7 @@ a.n-expo:hover .ext{transform:translate(2px,-2px)}
   page.classList.add('has3d');
 })();
 /* 3D를 쓸 수 없으면 카피를 바로 표시 */
-if(!document.querySelector('.page').classList.contains('has3d'))document.documentElement.classList.remove('pre');
+if(!document.querySelector('.page').classList.contains('has3d')){document.documentElement.classList.remove('pre');document.documentElement.classList.remove('wait3d');}
 /* 필름 그레인 텍스처 */
 (function(){try{var c=document.createElement('canvas');c.width=c.height=140;var x=c.getContext('2d'),d=x.createImageData(140,140);
   for(var i=0;i<d.data.length;i+=4){var v=Math.random()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255;}
