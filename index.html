@@ -349,7 +349,7 @@ html.pre .copy>*,html.pre .notice,html.pre .reopen{opacity:0!important;transform
   var pscene=new THREE.Scene(),pcam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
   pscene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),pm));
 
-  var narrow=false;
+  var narrow=false,baseRot=new THREE.Euler();
   function size(){
     var w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;
     renderer.setSize(w,h,false);rt.setSize(Math.round(w*PR),Math.round(h*PR));
@@ -361,9 +361,10 @@ html.pre .copy>*,html.pre .notice,html.pre .reopen{opacity:0!important;transform
     if(portrait)g.rotation.set(-0.42,0.5,0.32);   /* 세로형: X 확대 구도 */
     else g.rotation.set(-0.62,0.62,0.22);
     /* 화면 맞춤: 로고 네 모서리를 최종 카메라 위치에서 투영해, 가로 폭을 채우고 좌우 중앙에 오도록 반복 보정 */
+    baseRot.copy(g.rotation);
     g.scale.setScalar(1);
     var cp=new THREE.PerspectiveCamera(34,w/h,0.1,100);cp.position.set(0.6,0.9,10.5);cp.lookAt(0.6,0.7,0);cp.updateMatrixWorld();cp.updateProjectionMatrix();
-    var corners=[[-5,-0.8],[5,-0.8],[-5,0.8],[5,0.8]],target=portrait?2.3:1.6,halfW=Math.tan(THREE.MathUtils.degToRad(17))*10.5*(w/h);
+    var corners=[[-5,-0.8],[5,-0.8],[-5,0.8],[5,0.8]],target=portrait?2.3:1.45,halfW=Math.tan(THREE.MathUtils.degToRad(17))*10.5*(w/h);
     /* PC: 로고 윗선이 메인 슬로건 아래 끝(+여백)보다 내려오도록 */
     var lim=null,halfH=Math.tan(THREE.MathUtils.degToRad(17))*10.5;
     /* 로고 윗선 기준: 가로형은 슬로건 아래 40px, 세로형은 슬로건과 살짝(28px) 겹치게 */
@@ -432,8 +433,9 @@ html.pre .copy>*,html.pre .notice,html.pre .reopen{opacity:0!important;transform
       sweep.position.copy(W(-5.2+ph*10.4,0.35,0.9));sweep.intensity=7*Math.sin(Math.PI*ph);
       post(3.2+3*(1-e),0.5*Math.sin(Math.PI*ph));
     }else{
-      var tt=still?0:t-INTRO,ang=Math.sin(tt*0.07)*0.15;
-      cam.position.set(0.6+Math.sin(ang)*10.5,0.9+Math.sin(tt*0.05)*0.6,Math.cos(ang)*10.5);
+      var tt=still?0:t-INTRO,ang=Math.sin(tt*0.2)*0.24,dist=10.5+Math.sin(tt*0.14)*0.9;   /* 좌우 오빗 + 앞뒤 호흡 */
+      cam.position.set(0.6+Math.sin(ang)*dist,0.9+Math.sin(tt*0.16)*0.7,Math.cos(ang)*dist);
+      g.rotation.set(baseRot.x+Math.sin(tt*0.33)*0.05,baseRot.y+Math.sin(tt*0.26)*0.09,baseRot.z+Math.sin(tt*0.29)*0.035);   /* 로고 자체 부유 */
       look.copy(origin);focus.copy(ext);
       renderer.toneMappingExposure=0.58;
       var q=(tt%9)/9;
