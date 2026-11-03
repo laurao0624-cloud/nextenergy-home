@@ -190,7 +190,7 @@ button:focus-visible{outline:2px solid var(--trail);outline-offset:3px}
 /* ---- 레이아웃: 슬로건 상단 전폭 2줄, 공지는 둘째 줄 옆에서 시작 ---- */
 :root{--h1:clamp(30px,min(4.3vw,7.4vh),68px)}
 .stage{align-items:flex-start}
-.stage .wrap{grid-template-columns:minmax(0,1fr) minmax(320px,430px);grid-template-areas:"eb eb" "tt tt" "bd nt" "sp nt" ". nt";column-gap:56px;row-gap:0;align-items:start;padding-top:clamp(48px,11vh,130px);padding-bottom:40px}
+.stage .wrap{grid-template-columns:minmax(0,1fr) minmax(320px,430px);grid-template-areas:"eb eb" "tt tt" "bd nt" "sp nt" ". nt";column-gap:56px;row-gap:0;align-items:start;padding-top:clamp(76px,15vh,170px);padding-bottom:40px}
 .copy{display:contents}
 .copy .eyebrow{grid-area:eb;font-family:'Pretendard',var(--sans);font-weight:600;font-size:clamp(14px,1.25vw,19px);letter-spacing:.01em;text-transform:none}
 .copy h1{grid-area:tt;margin-top:10px;font-family:'Pretendard',var(--sans);font-weight:800;font-size:var(--h1);line-height:1.18;letter-spacing:-.015em}
@@ -207,7 +207,7 @@ button:focus-visible{outline:2px solid var(--trail);outline-offset:3px}
 @media (orientation:portrait) and (min-width:600px){
   body{overflow:auto}
   .page{height:auto;min-height:100%}
-  .stage .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"eb" "tt" "bd" "sp" "nt";padding-top:8vh}
+  .stage .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"eb" "tt" "bd" "sp" "nt";padding-top:11vh}
   .copy .eyebrow{font-size:2.3vw}
   .copy h1{font-size:7vw}
   .copy p{font-size:2.2vw;max-width:none;margin-top:3.2vw}
