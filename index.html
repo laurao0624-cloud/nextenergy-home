@@ -232,6 +232,17 @@ a.n-expo:hover{background:rgba(255,255,255,.11)}
 a.n-expo:focus-visible{outline:2px solid var(--trail);outline-offset:-2px}
 a.n-expo .ext{font-style:normal;font-weight:400;color:var(--trail);margin-left:4px;display:inline-block;transition:transform .2s ease}
 a.n-expo:hover .ext{transform:translate(2px,-2px)}
+/* 제품 칩: 제품명 + 모델별 링크 버튼(가이드 상세 페이지) */
+.specs .grp{display:inline-flex;align-items:stretch;font-size:12.5px;border:1px solid rgba(143,180,255,.28);background:rgba(10,16,48,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.specs .grp>.gname{display:flex;align-items:center;padding:.5em 1em;border:0;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;color:#fff;font-weight:500;font-size:1em}
+.specs .grp>a{display:inline-flex;align-items:center;gap:.45em;padding:.5em .8em;border-left:1px solid rgba(143,180,255,.22);font-family:var(--mono);font-size:.92em;letter-spacing:.03em;color:var(--trail);text-decoration:none;transition:background .2s ease,color .2s ease}
+.specs .grp>a em{font-style:normal;font-family:var(--sans);font-size:.88em;letter-spacing:0;color:var(--on-night-dim)}
+.specs .grp>a::after{content:"↗";font-family:var(--sans);font-size:.85em;opacity:.55;transition:transform .2s ease,opacity .2s ease}
+.specs .grp>a:hover{background:rgba(143,180,255,.16);color:#fff}
+.specs .grp>a:hover em{color:#C9D4FF}
+.specs .grp>a:hover::after{opacity:1;transform:translate(2px,-2px)}
+.specs .grp>a:focus-visible{outline:2px solid var(--trail);outline-offset:-2px}
+@media (orientation:portrait) and (min-width:600px){.specs .grp{font-size:1.8vw}}
 </style>
 
 </head>
@@ -255,11 +266,11 @@ a.n-expo:hover .ext{transform:translate(2px,-2px)}
         <div class="eyebrow">From Vehicle Data to Dispenser Control</div>
         <h1>IR Communication Components<br><em>for Hydrogen Refueling</em></h1>
         <p>Connecting vehicle data to hydrogen refueling equipment through infrared communication.</p>
-        <div class="specs">
-          <span><b>Control Module</b><small>C70K</small></span>
-          <span><b>IR Emitter</b><small>E70K / E70K2</small></span>
-          <span><b>IR Receiver</b><small>R70K Type A / B</small></span>
-          <span><b>Protocol Converter</b><small>P70K</small></span>
+        <div class="specs" aria-label="제품 상세 안내 (새 창)">
+          <div class="grp"><span class="gname">Control Module</span><a href="https://guide.inextu.com/c70k/" target="_blank" rel="noopener">C70K</a></div>
+          <div class="grp"><span class="gname">IR Emitter</span><a href="https://guide.inextu.com/e70k/" target="_blank" rel="noopener">E70K<em>방폭</em></a><a href="https://guide.inextu.com/e70k2/" target="_blank" rel="noopener">E70K2<em>비방폭</em></a></div>
+          <div class="grp"><span class="gname">IR Receiver</span><a href="https://guide.inextu.com/r70k-a/" target="_blank" rel="noopener">R70K<em>Type A</em></a><a href="https://guide.inextu.com/r70k-b/" target="_blank" rel="noopener">R70K<em>Type B</em></a></div>
+          <div class="grp"><span class="gname">Protocol Converter</span><a href="https://guide.inextu.com/p70k/" target="_blank" rel="noopener">P70K</a></div>
         </div>
       </div>
 
