@@ -197,6 +197,19 @@ button:focus-visible{outline:2px solid var(--trail);outline-offset:3px}
   .stage .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"eb" "tt" "bd" "sp" "nt";padding-bottom:44px}
   .notice,.reopen{margin-top:32px;justify-self:stretch}
 }
+/* ---- 태블릿 세로형: 글자 확대, 1단, 칩과 공지 사이를 X 무대로 ---- */
+@media (orientation:portrait) and (min-width:600px){
+  body{overflow:auto}
+  .page{height:auto;min-height:100%}
+  .stage .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"eb" "tt" "bd" "sp" "nt";padding-top:8vh}
+  .copy .eyebrow{font-size:2.3vw}
+  .copy h1{font-size:7vw}
+  .copy p{font-size:2.2vw;max-width:none;margin-top:3.2vw}
+  .copy .specs{margin-top:2.6vw;gap:1.2vw}
+  .specs span{font-size:1.8vw;padding:.7em 1.1em}
+  .specs span small{font-size:1.5vw}
+  .notice,.reopen{justify-self:start;max-width:min(620px,100%);margin-top:26vh}
+}
 </style>
 
 </head>
@@ -348,9 +361,11 @@ button:focus-visible{outline:2px solid var(--trail);outline-offset:3px}
     /* 세로형: X를 화면 폭 약 75%로 키워 서브 문장~칩 영역 뒤 중앙에 */
     var yc=null;
     if(portrait){
-      lim=null;corners=[[-0.6,-0.8],[1.85,-0.8],[-0.6,0.8],[1.85,0.8]];target=w<600?1.45:1.0;
-      var sp=document.querySelector('.copy .specs');
-      if(pb&&sp){yc=1-2*(((pb.getBoundingClientRect().top+sy)+(sp.getBoundingClientRect().bottom+sy))/2+30)/h;}
+      var tab=w>=600;
+      lim=null;corners=[[-0.6,-0.8],[1.85,-0.8],[-0.6,0.8],[1.85,0.8]];target=tab?1.15:1.45;
+      var sp=document.querySelector('.copy .specs'),nt=document.querySelector('.notice');
+      if(tab&&sp&&nt&&!nt.hidden){yc=1-2*(((sp.getBoundingClientRect().bottom+sy)+(nt.getBoundingClientRect().top+sy))/2)/h;}   /* 태블릿: 칩과 공지 사이 중앙 */
+      else if(pb&&sp){yc=1-2*(((pb.getBoundingClientRect().top+sy)+(sp.getBoundingClientRect().bottom+sy))/2+30)/h;}
     }
     for(var k=0;k<16;k++){
       g.updateMatrixWorld(true);
